@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Medieval Adventure Simulator</title>
+    <style>
+        #game {
+    width: 80%;
+    max-width: 800px;
+    height: 80vh;
+    margin: 0 auto;
+    background-color: #fffacd;
+    background-image: url(img/background.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+    border: 2.5vw solid #8b4513;
+    border-radius: 2.5vw;
+    text-align: center;
+    font-family: 'Old Standard TT', serif;
+    font-size: 2.5vw;
+    line-height: 1.5;
+    padding: 5vw;
+}
+
+h1 {
+    padding-top: 100px;
+    font-size: 3.5vw;
+    margin-bottom: 3vw;
+    font-family: 'Old English Text MT', serif; 
+}
+
+p {
+    margin-bottom: 1vw;
+}
+
+button {
+    background-color: #8b4513;
+    color: #fffacd;
+    border: none;
+    border-radius: 1vw;
+    padding: 2.5vw 5vw;
+    margin-top: 2vw;
+    font-size: 2.5vw;
+    cursor: pointer;
+    font-family: 'Old Standard TT', serif;
+}
+
+button:hover {
+    background-color: #d2691e;
+}
+
+#quest {
+    margin-right: 2vw;
+}
+
+#message {
+    margin-top: 3vw;
+    overflow-y: scroll;
+    max-height: 20vh;
+}
+    </style>
+</head>
+<body>
+    <div id="game">
+        <h1>The Adventures of <span id="name"></span></h1>
+        <p>Rank: <span id="rank">Peasant</span> </p>
+        <p>Years Adventuring: <span id="week">0</span> </p>
+        <p>Gold: <span id="gold">0</span> </p>
+        <p>Fame: <span id="fame">0</span> </p>
+        <p>Health: <span id="health">20</span> </p>
+        <p>Quests completed: <span id="questsCompleted">0</span></p>
+        <p>Quests failed: <span id="questsFailed">0</span></p>
+        <button id="quest">Complete Quest</button>
+        <p></p>
+        <button id="shop">Shop</button>
+        <button id="restart">New Life</button>
+        <button onclick="location.href='index.html'">Main Menu</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        var names = ["Arthur", "Guinevere", "Lancelot", "Merlin", "Galahad", "Tristan", "Isolde"];
+        var characterName = names[Math.floor(Math.random() * names.length)];
+        var rank = "Peasant";
+        var gold = 0;
+        var fame = 0;
+        var week = 0;  
+        var health = 20;
+        var questDifficulty = 1;
+        var questsCompleted = 0;
+        var questsFailed = 0;
+        var items = [
+  {name: "Sword", price: 100},
+  {name: "Shield", price: 50},
+  {name: "Helmet", price: 50},
+  {name: "Armour", price: 100},
+  {name: "Potion", price: 10},
+  {name: "Large Potion", price: 20}
+];
+        var events = [
+{name: "You are asked to retrieve a powerful artifact", probability: 1/50},
+{name: "You must rescue a group of hostages from a band of pirates", probability: 1/50},
+{name: "You are hired to protect a noble's daughter during her journey to a distant kingdom", probability: 1/50},
+{name: "You must retrieve a stolen magical item from a powerful sorcerer", probability: 1/50},
+{name: "You are tasked with solving a murder mystery in a wealthy merchant's mansion", probability: 1/50},
+{name: "You must deliver a message to a powerful wizard in a dangerous mountain range", probability: 1/50},
+{name: "You are called upon to negotiate a peace treaty between two rival gangs in a city", probability: 1/50},
+{name: "You must escort a group of pilgrims on a dangerous journey to a holy site", probability: 1/50},
+{name: "You are tasked with locating a missing scholar who disappeared while researching a powerful spell", probability: 1/50},
+{name: "You must protect a valuable relic on display at a grand exhibition", probability: 1/50},
+{name: "You are sent to investigate a series of disappearances in a haunted graveyard", probability: 1/50},
+{name: "You must find a way to lift a curse that has befallen a small village", probability: 1/50},
+{name: "You are hired to retrieve a stolen treasure map from a notorious thief", probability: 1/50},
+{name: "You must negotiate a trade agreement with a foreign kingdom to secure valuable resources", probability: 1/50},
+{name: "You are called upon to defend a fortress against an invading army", probability: 1/50},
+{name: "You must infiltrate a corrupt government to bring down a corrupt official", probability: 1/50},
+{name: "You are tasked with investigating a series of strange occurrences in a royal palace", probability: 1/50},
+{name: "You must track down a dangerous assassin hired to kill a high-ranking official", probability: 1/50},
+{name: "You are hired to retrieve a powerful weapon stolen by a rival faction", probability: 1/50},
+{name: "You must solve a puzzle to unlock a secret passage leading to a hidden treasure", probability: 1/50},
+{name: "You are sent to explore a dangerous jungle in search of a rare medicinal herb", probability: 1/50},
+{name: "You must stop a cult from summoning a powerful demon to wreak havoc upon the land", probability: 1/50},
+{name: "You are tasked with finding a missing prince who disappeared under mysterious circumstances", probability: 1/50},
+{name: "You must protect a group of merchants traveling through bandit-infested territory", probability: 1/50},
+{name: "You are called upon to negotiate a peace treaty between two warring tribes in a remote jungle", probability: 1/50},
+{name: "You must investigate a series of attacks on a remote mining colony", probability: 1/50},
+{name: "You are hired to protect a group of nobles on a dangerous safari through a monster-infested wilderness", probability: 1/50},
+{name: "You must infiltrate a secret society to uncover their plans to overthrow the government", probability: 1/50},
+{name: "You are tasked with retrieving a stolen family heirloom from a notorious gang of thieves", probability: 1/50},
+{name: "You must locate a missing expedition lost in a treacherous mountain range", probability: 1/50},
+{name: "You are sent to investigate a mysterious disappearance", probability: 1/50},
+{name: "You are tasked with delivering an important message", probability: 1/50},
+{name: "You must explore a dangerous dungeon to uncover its secrets", probability: 1/50},
+{name: "You are hired to escort a valuable shipment", probability: 1/50},
+{name: "You are challenged to prove your worth in a grand tournament", probability: 1/50},
+{name: "You must find and rescue a kidnapped noble", probability: 1/50},
+{name: "You are assigned to hunt down a notorious bandit", probability: 1/50},
+{name: "You are called upon to investigate a series of strange occurrences", probability: 1/50},
+{name: "You must recover a stolen family heirloom", probability: 1/50},
+{name: "You are tasked with negotiating a delicate peace treaty", probability: 1/50},
+{name: "You must explore a cursed forest to find a cure for a deadly plague", probability: 1/50},
+{name: "You are hired to protect a valuable caravan from raiders", probability: 1/50},
+{name: "You must solve a series of puzzles to uncover a hidden treasure", probability: 1/50},
+{name: "You are challenged to prove your mettle in a knightly trial", probability: 1/50},
+{name: "You must travel to a distant land to retrieve a rare ingredient for a powerful potion", probability: 1/50},
+{name: "You are tasked with infiltrating an enemy stronghold and stealing their plans", probability: 1/50},
+{name: "You must navigate a treacherous maze to find a lost artifact", probability: 1/50},
+{name: "You are hired to protect a small village from a rampaging monster", probability: 1/50},
+{name: "You must seek out and defeat a powerful mage threatening the land", probability: 1/50},
+{name: "You are hired to investigate a haunted castle", probability: 1/50},
+{name: "You must retrieve a powerful artifact from a dangerous dungeon", probability: 1/50},
+{name: "You are sent on a mission to negotiate a peace treaty between two warring factions", probability: 1/50},
+{name: "You must track down a thief who stole an important item from the king's treasury", probability: 1/50},
+{name: "You are called upon to defend a village from a band of marauders", probability: 1/50}
+];
+        var names = ["Arthur", "Lancelot", "Merlin", "Galahad", "Tristan", "Gawain", "Percival", "Gareth", "Bors", "Kay", "Bedevere", "Gaheris", 
+        "Gareth", "Gorlois", "Leodegrance", "Uther", "Vortigern", "Mordred", "Constantine", "Cerdic", "Aelle","Elden", "Bram", "Cassius", "Darian", 
+        "Finley", "Gunnar", "Hayden", "Isaac", "Jasper", "Kai", "Lysander", "Maxen", "Nikolai", "Oberon", "Phineas", "Quinton", "Ragnar", "Sebastian", 
+        "Thane", "Urien", "Viggo", "Wilfred", "Xander", "Yorick", "Zephyr", "Alden", "Benedict", "Cedric", "Darian", "Emrys", "Finnegan", "Gideon", 
+        "Hector", "Ignatius", "Jethro", "Kendrick", "Lucian", "Marius", "Nash", "Orion", "Adriel", "Balthazar", "Caspian", "Daxton", "Eamon", "Felix", 
+        "Garrick", "Hendrik", "Isaiah", "Jacobi", "Kellan", "Lorcan", "Maddox", "Nevan", "Odin", "Pascal", "Quincy", "Raiden", "Soren", "Teagan", "Ulric", "Valentine", "Wesley", "Xavier", "Yestin", "Zander", "Atlas", "Basil", "Caius", "Dante", "Ezio", "Flint", "Griffin", "Hadrian", "Icarus", "Jove", "Keiran", "Loki", "Magnus", "Nero"];
+        var randomName = names[Math.floor(Math.random() * names.length)];
+        document.getElementById("name").innerHTML = randomName;
+
+        function updateStats() {
+            document.getElementById("rank").innerHTML = rank;
+            document.getElementById("gold").innerHTML = gold;
+            document.getElementById("fame").innerHTML = fame;
+            document.getElementById("week").innerHTML = week;
+            document.getElementById("health").innerHTML = health;
+            document.getElementById("questsCompleted").innerHTML = questsCompleted;
+            document.getElementById("questsFailed").innerHTML = questsFailed;
+        }
+        function completeQuest() {
+    var reward = Math.floor(Math.random() * 20) + questDifficulty;
+    var penalty = Math.floor(Math.random() * 5) + questDifficulty;
+    health -= penalty;
+
+    var randomIndex = Math.floor(Math.random() * events.length);
+    var eventIndex = randomIndex;
+    
+
+    if (eventIndex !== -1) {
+        document.getElementById("message").innerHTML = events[eventIndex].name;
+        if (eventIndex === 0) {
+            gold += 0;
+        } else if (eventIndex === 1) {
+            gold -= 0;
+        } else if (eventIndex === 2) {
+            gold += 0;
+        } else if (eventIndex === 3) {
+            health += 0;
+        } else if (eventIndex === 4) {
+            health -= 0;
+        }
+    }
+
+    var questSuccess = (reward >= 1) && (penalty <= 3);
+    if (questSuccess) {
+        questsCompleted++;
+        gold += reward;
+        week += 0.25;
+        fame += reward + 5;
+
+        if (gold < 0) {
+            gold = 0;
+        }
+    } else {
+        questsFailed++;
+        fame += 1;
+        week += 0.25;
+        
+    }
+
+    if (health <= 0) {
+        health = 0;
+        document.getElementById("message").innerHTML = "On your last quest you lost " + penalty + " health and died. This is the end of " + characterName + "'s life. Press please New Life to try again...";
+        document.getElementById("quest").disabled = true;
+        document.getElementById("shop").disabled = true;
+        return;
+    }
+
+    if (fame >= 5000) {
+      rank = "God-Emperor of Mankind";
+    } else if (fame >= 2000) {
+      rank = "Emperor";
+    } else if (fame >= 1000) {
+      rank = "King";  
+    } else if (fame >= 750) {
+      rank = "Duke";
+    } else if (fame >= 500) {
+      rank = "Count";
+    } else if (fame >= 250) {
+      rank = "Baron";
+    } else if (fame >= 100) {
+      rank = "Knight";
+    } else if (fame >= 25) {
+      rank = "Adventurer";
+    }
+
+    updateStats();
+    if (questSuccess) {
+        document.getElementById("message").innerHTML += "<br>You completed the quest and earned some gold and fame, but lost " + penalty + " health.";
+    } else {
+        document.getElementById("message").innerHTML += "<br>You failed the quest and lost " + penalty + " health, but earned some fame for your troubles.";
+    }
+}
+function openShop() { // This controls the shop button 
+var message = "Welcome to the shop! Here are the available items:\n\n";
+for (var i = 0; i < items.length; i++) {
+message += items[i].name + ": " + items[i].price + " gold\n";
+}
+message += "\nYour gold: " + gold + "\n\nEnter the name of the item you want to buy, or type 'cancel' to exit the shop. Swords and Shields allow you to go on special quests; Helmets and Armours will increase your health.";
+var response = prompt(message);
+if (response !== null && response !== "") {
+response = response.toLowerCase();
+for (var i = 0; i < items.length; i++) {
+if (response === items[i].name.toLowerCase()) {
+if (gold >= items[i].price) {
+gold -= items[i].price;
+if (items[i].name === "Sword" || items[i].name === "Shield") {
+var successChance = (Math.random() * 100) < (fame + 50); // Success chance based on fame
+if (successChance) {
+questDifficulty += 1;
+gold += questDifficulty * 10;
+fame += questDifficulty * 15;
+questsCompleted += 1;
+week += 0.25;
+document.getElementById("message").innerHTML = "You successfully completed a quest with your new " + items[i].name + " and earned " + (questDifficulty * 10) + " gold and " + (questDifficulty * 15) + " fame! Unfortunately the " + items[i].name + " has broken so you'll need to buy another.";
+} else {
+health -= Math.floor(Math.random() * 10) + 5;
+questsFailed += 1;
+fame += 5;
+week += 0.25;
+document.getElementById("message").innerHTML = "You failed a quest with your new " + items[i].name + " and lost some health, but gained 5 fame! Unfortunately the " + items[i].name + " has broken so you'll need to buy another.";
+}
+} else if (items[i].name === "Potion") {
+health = Math.min(health + 5, 20);
+document.getElementById("message").innerHTML = "You bought a Potion and regained 5 health points.";
+} else if (items[i].name === "Large Potion") {
+health = Math.min(health + 10, 20);
+document.getElementById("message").innerHTML = "You bought a Large Potion and regained 10 health points.";
+} else if (items[i].name === "Helmet") {
+health += 30;
+document.getElementById("message").innerHTML = "You bought a Helmet and gained 30 health points.";
+} else if (items[i].name === "Armour") {
+health += 75;
+document.getElementById("message").innerHTML = "You bought an Armour and increased your health by 75 points.";
+} else {
+document.getElementById("message").innerHTML = "You bought a " + items[i].name + ".";
+}
+} else {
+document.getElementById("message").innerHTML = "You don't have enough gold to buy a " + items[i].name + ".";
+}
+updateStats();
+return;
+}
+}
+document.getElementById("message").innerHTML = "Invalid item name. Please try again.";
+}
+}
+
+    updateStats(); // This updates the stats
+
+    document.getElementById("quest").addEventListener("click", completeQuest);
+    document.getElementById("shop").addEventListener("click", openShop);
+    document.getElementById("restart").addEventListener("click", function() {
+    location.reload();
+});
+</script>
+</body>
+</html>

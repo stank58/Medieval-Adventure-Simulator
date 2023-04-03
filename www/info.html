@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Medieval Adventure Simulator</title>
+    <style>
+        #game {
+    width: 80%;
+    max-width: 800px;
+    height: 80vh;
+    margin: 0 auto;
+    background-color: #fffacd;
+    background-image: url(img/background.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+    border: 2.5vw solid #8b4513;
+    border-radius: 2.5vw;
+    text-align: center;
+    font-family: 'Old Standard TT', serif;
+    font-size: 2.5vw;
+    line-height: 1.5;
+    padding: 5vw;
+}
+
+h1 {
+    padding-top: 100px;
+    font-size: 3.5vw;
+    margin-bottom: 3vw;
+}
+
+p {
+    margin-bottom: 1vw;
+}
+
+button {
+    background-color: #8b4513;
+    color: #fffacd;
+    border: none;
+    border-radius: 1vw;
+    padding: 2.5vw 5vw;
+    margin-top: 2vw;
+    font-size: 2.5vw;
+    cursor: pointer;
+    font-family: 'Old Standard TT', serif;
+}
+
+button:hover {
+    background-color: #d2691e;
+}
+
+#quest {
+    margin-right: 2vw;
+}
+
+#message {
+    margin-top: 3vw;
+    overflow-y: scroll;
+    max-height: 20vh;
+}
+    </style>
+</head>
+<body>
+    <div id="game">
+        <h1>How To Play</h1>
+        <p>Medieval Adventure Simulator is a text based game that allows you to progress from Peasant to Emperor by gaining fame and fortune.</p>
+        <p>To progress in the medieval heirarchy you will need to gain fame by completing quests. You do this by pressing the "Complete Quest" button.</p>
+        <p>If you suceed you will get gold and fame. If you fail, you will get a small amount of fame but no gold. Once you reach a certain level of fame your will gain a new rank automatically.</p>
+        <p>Both success and failure will result in a loss of health. You can regain health by drinking a potion from the shop or purchasing any type of armour.</p>
+        <p>You can also go on special quests by purchasing either the sword or the shield from the shop. These cost a lot of gold but can result in much higher rewards.</p>
+        <p>The end goal is to reach 2000 fame and become the Emperor which is the final rank... <i>or is it?</i></p>
+        <button onclick="location.href='index.html'">Back</button>
+    </div>
+</body>
+</html>
